@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Clase para modelar una partícula magnética
  * 
@@ -7,9 +9,34 @@ public class Particula{
     private int[] ruta;
     private double masa;
     private double campoM;
-    private int x,y; //posicion en la estructura
+    private ArrayList<Integer> posicion; //posicion en la estructura
+    /*
     private Particula derecha;
     private Particula izquierda;
     private Particula superior;
     private Particula inferior;
+    */
+
+    public Particula(int numCiudades, int x, int y) {
+        ruta = new int[numCiudades];
+        posicion = new ArrayList<>();
+        posicion.add(x);
+        posicion.add(y);
+    }
+
+    public void setMasa(int m) {
+        masa = m;
+    }
+
+    public double getMasa() {
+        return masa;        
+    }
+
+    public void setCampoM(int cm) {
+        campoM = cm;
+    }
+
+    public double getCampoM() {
+        return campoM;
+    }
 }
