@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /** 
@@ -7,10 +6,9 @@ import java.util.HashMap;
  */
 public class Poblacion{
     /**Atributos**/
-    public HashMap<ArrayList<Integer>, Particula> particulas;
+    public HashMap<Posicion, Particula> particulas;
 
     public Poblacion() {
-        particulas = new HashMap<>();
-        
+        particulas = new HashMap<>();        
     }
 }
