@@ -6,10 +6,11 @@ public class Particula{
     /**Atributos**/
     private int[] ruta;
     private double masa;
-    private double campoM;
+    private double campoM;   
     private Posicion posicion; //posicion en la estructura
      //fuerza que se le es aplicada a la particula por sus vecinos
     private double fuerza;
+    private double costo;
     
     public Particula(int numCiudades, int x, int y) {
         ruta = new int[numCiudades];
@@ -46,5 +47,25 @@ public class Particula{
 
     public double getFuerza() {
         return fuerza;
+    }
+
+    public void agregaCiudad(int index, int c){
+	if(index >= ruta.length || index < 0)
+	    return;
+	ruta[index] = c;	
+    }
+
+    public int size(){
+	return ruta.length;
+    }
+
+    public int getCiudad(int index){
+	if(index >= ruta.length || index < 0)
+	    return -1;
+	return ruta[index];
+    }
+
+    public void setCosto(double costo){
+	this.costo = costo;
     }
 }

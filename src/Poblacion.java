@@ -46,5 +46,9 @@ public class Poblacion{
             }
         }
     }
-    
+
+    public void agrega(Particula p, FuncionCosto fun){
+	p.setCosto(fun.evaluar(p));
+	particulas.put(p.getPosicion(), p);
+    }    
 }
