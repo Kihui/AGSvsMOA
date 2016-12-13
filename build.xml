@@ -1,0 +1,37 @@
+<project name="MOA" default="jar">
+
+  <target name="jar" depends="build">
+    <jar jarfile="MOA.jar">
+      <zipfileset dir="build" prefix=""/>
+      <zipgroupfileset dir="lib" includes="*.jar" excludes=""/>
+      <manifest>
+        <attribute name="Main-Class" value="Main"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="build">
+    <mkdir dir="build"/>
+    <javac srcdir="src"
+	   destdir="build"
+	   includeantruntime="false"
+	   classpath="lib/TSPLIB4J-0.2.jar">
+      <compilerarg value="-Xlint"/>
+    </javac>
+  </target>
+
+  <target name="clean">
+    <delete dir="build"/>
+    <delete file="MOA.jar"/>
+  </target>
+  
+  <target name="run" depends="build">
+    <java classname="Main" fork="true">
+      <arg value="${file}"/>
+      <classpath>
+	<pathelement path="lib/TSPLIB4J-0.2.jar:build"/>
+      </classpath>
+    </java>
+  </target>
+  
+</project>
