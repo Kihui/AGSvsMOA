@@ -111,7 +111,7 @@ public class Poblacion{
                     if(vecinos[i].getCampoM() > mv.getCampoM())
                         mv = vecinos[i];                
                 for(int i = 1; i < p.size(); i++)
-                    if(r.nextDouble() < p.getVelocidad(i))
+                    if(r.nextDouble() <= p.getVelocidad(i))
                         permuta(p, mv, i);
             }
         }
@@ -206,7 +206,7 @@ public class Poblacion{
                     for(int i = 0; i < p.size(); i++)
                         probabilidades[i] = (probabilidades[i] -  min) / ( max - min);
                     for(int i = 1; i < p.size(); i++)
-                        if(r.nextDouble() < probabilidades[i])
+                        if(r.nextDouble() <= probabilidades[i])
                             permuta(p, i);                    
                 }         
             
