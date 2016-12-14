@@ -41,7 +41,7 @@ public class MOA{
 		    int random = r.ints(1,0,cities.size()).findFirst().getAsInt();
 		    nueva.agregaCiudad(k,cities.remove(random));
 		}
-		out.agrega(nueva, objFun);
+		out.agrega(nueva);
 	    }
 	return out;
     }

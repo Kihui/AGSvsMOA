@@ -32,7 +32,7 @@ public class Main{
             return;
 	 int[] ciudades = problema.getDistanceTable().listNodes();
 	 FuncionObjetivo objFun = new FuncionObjetivo(problema.getDistanceTable());
-	 MOA moa = new MOA(100,100,15,200,ciudades.length,objFun);
+	 MOA moa = new MOA(100,100,15,600,ciudades.length,objFun);
 	 moa.run();
     }
 }
