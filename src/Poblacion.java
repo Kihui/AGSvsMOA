@@ -37,6 +37,19 @@ public class Poblacion{
         return vecinos;
     }
 
+    public void normalizarCamposM() {
+        double bmin = particulas(new Posicion(0, 0));
+        double bmax = 0;
+        for(Particula p : particulas.values()) {
+            if(p.getCampoM() < bmin)
+                bmin = p.getCampoM();
+            if(p.getCampoM() > bmax)
+                bmax = p.getCampoM();
+        }
+        for(Particula p : particulas.values())
+            p.setCampoM((p.getCampoM() - bmin) / (bmax - bmin));
+    }
+    
     public void evaluaFuerza() {
         for (Particula p : particulas.values()) {
             for(Particula v : getVecinosParticula(p)) {
