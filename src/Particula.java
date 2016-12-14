@@ -12,11 +12,13 @@ public class Particula{
     private double[] fuerza;
     //costo de la ruta
     private double costo;
+    private double[] velocidad;
     
     public Particula(int numCiudades, int x, int y) {
         posicion = new Posicion(x, y);
         ruta = new int[numCiudades];;
         fuerza = new double[ruta.length];
+        velocidad = new double[ruta.length];
     }
 
     public void setMasa(double m) {
@@ -51,6 +53,14 @@ public class Particula{
         return fuerza[i];
     }
 
+    public void setVelocidad(int i, double v) {
+        velocidad[i] = v;
+    }
+
+    public double getVelocidad(int i) {
+        return velocidad[i];
+    }
+
     public void agregaCiudad(int index, int c){
 	if(index >= ruta.length || index < 0)
 	    return;
@@ -69,5 +79,9 @@ public class Particula{
 
     public void setCosto(double costo){
 	this.costo = costo;
+    }
+
+    public double getCosto() {
+        return costo;
     }
 }

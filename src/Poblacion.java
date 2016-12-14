@@ -1,5 +1,5 @@
 import java.util.HashMap;
-
+import java.util.Random;
 /** 
  * Clase para modelar la población de partículas 
  * para el MOA
@@ -70,10 +70,61 @@ public class Poblacion{
     }
 
     public void evaluaVelocidad() {
-        
+        Random r = new Random(3);
+
+        // Evaluando velocidades
+        for(Particula p : particulas.values()) {
+            for(int i = 0; i < p.size(); i++) {
+                double v = (p.getFuerza(i) / p.getMasa()) * (r.nextDouble() * p.size());
+                p.setVelocidad(i, v);
+            }
+        }
+
+        // Normalizando velocidades
+        for(Particula p : particulas.values()) {
+            double vmin = p.getVelocidad(0);
+            double vmax = 0;
+            for(int i = 0; i < p.size(); i++) {
+                if(p.getVelocidad(i) < vmin)
+                    vmin = p.getVelocidad(i);
+                if(p.getVelocidad(i) > vmax)
+                    vmax = p.getVelocidad(i);
+            }
+            for(int i = 0; i < p.size(); i++)
+                p.setVelocidad(i, (p.getVelocidad(i) - vmin) / (vmax - vmin));
+        }
     }
 
-    public void actualizaPosicion() {
+    // Actualiza la posicion de todas las particulas menos de la que tiene menor costo
+    public void actualizaPosicion(int costoMin) {
+        Random r = new Random(1);
+        for(Particula p : particulas.values()) {
+            if(p.getCosto() > costoMin) {
+                Particula[] vecinos = getVecinosParticula(p);
+                Particula mv = vecinos[0];
+                for(int i = 1; i < 4; i++)
+                    if(vecinos[i].getCampoM() > mv.getCampoM())
+                        mv = vecinos[i];                
+                for(int i = 0; i < p.size(); i++)
+                    if(r.nextDouble() < p.getVelocidad(i))
+                        permuta(p, mv, i);
+            }
+        }
+    }
+
+    private void permuta(Particula p, Particula v, int i) {
+        if(p.getCiudad(i) == v.getCiudad(i))
+            return;
+        int x1 = 0;
+        for(int j = 0; j < v.size(); j++)
+            if(p.getCiudad(i) == v.getCiudad(j))
+                x1 = j;
+        int x2 = 0;
+        for(int j = 0; j < p.size(); j++)
+            if(p.getCiudad(j) == v.getCiudad(x1))
+                x2 = j;
+        p.agregaCiudad(x2, p.getCiudad(i));
+        p.agregaCiudad(i, v.getCiudad(x1));
     }
     
     public void agrega(Particula p, FuncionCosto fun){
