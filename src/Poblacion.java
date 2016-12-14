@@ -38,11 +38,18 @@ public class Poblacion{
     }
 
     public void evaluaFuerza() {
-        double f = 0;
         for (Particula p : particulas.values()) {
             for(Particula v : getVecinosParticula(p)) {
-                // wtf que son las dimensiones k?????????
-//                f += 
+                for(int i = 0; i < p.size(); i++) {
+                    double suma = 0;
+                    for(int j = 0; j < p.size(); j++) {
+                        double dif = (p.getCiudad(j) - v.getCiudad(j)) / (p.size());
+                        suma += dif * dif;
+                    }
+                    double distancia = Math.sqrt((1/p.size()) * suma);
+                    double f = p.getFuerza(i) + ((p.getCiudad(i) - v.getCiudad(i))* v.getCampoM()) / distancia;
+                    p.setFuerza(i, f);
+                }
             }
         }
     }
