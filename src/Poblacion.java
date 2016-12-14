@@ -38,7 +38,7 @@ public class Poblacion{
     }
 
     public void normalizarCamposM() {
-        double bmin = particulas(new Posicion(0, 0));
+        double bmin = particulas.get(new Posicion(0, 0)).getCampoM();
         double bmax = 0;
         for(Particula p : particulas.values()) {
             if(p.getCampoM() < bmin)
@@ -51,7 +51,7 @@ public class Poblacion{
     }
     
     public void evaluaFuerza() {
-        for (Particula p : particulas.values()) {
+        for(Particula p : particulas.values()) {
             for(int i = 0; i < p.size(); i++)
                 p.setFuerza(i, 0);
             for(Particula v : getVecinosParticula(p)) {
@@ -70,6 +70,7 @@ public class Poblacion{
     }
 
     public void evaluaVelocidad() {
+        
     }
 
     public void actualizaPosicion() {
