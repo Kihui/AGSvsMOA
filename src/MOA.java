@@ -47,13 +47,15 @@ public class MOA{
     }
 
     private void iteracion(Poblacion actual){
+//        System.out.println(actual);
 	double mejorCosto = objFun.evaluar(actual);
 	System.out.println("Normalizando");
 	actual.normalizarCamposM();
 	actual.evaluaMasa(alpha, rho);
 	actual.evaluaFuerza();
+        actual.evaluaVelocidad();
 	actual.actualizaPosicion(mejorCosto);
-
+        actual.SRR(1,1);
 	actual.nuevaGen();
 	//notthereyet
     }
@@ -64,7 +66,7 @@ public class MOA{
 	    System.out.println("Esta madre es null");
 	for(int i = 1; i <= maxGen; i++){
 	    iteracion(p);
-	    System.out.println(p.getMejorCalificado());
+	    System.out.println("Mejor " + p.getMejorCalificado());
 	}
     }
 

@@ -77,6 +77,14 @@ public class Particula{
 	return ruta[index];
     }
 
+    public void setRuta(int[] r){
+        ruta = r;
+    }
+
+    public int[] getRuta() {
+        return ruta;
+    }
+
     public void setCosto(double costo){
 	this.costo = costo;
     }
@@ -89,6 +97,7 @@ public class Particula{
     public String toString(){
 	String out = "Particula "+posicion+": ";
 	out += sRuta()+"\n";
+        out += "Velocidad" + sVel()+"\n";
 	out += "Costo: "+costo;
 	return out;	
     }
@@ -98,6 +107,16 @@ public class Particula{
 	for(int i = 0; i < ruta.length; i++){
 	    out += ruta[i];
 	    if(i < ruta.length)
+		out += ", ";
+	}
+	return out+"]";
+    }
+
+    private String sVel(){
+	String out = "[";
+	for(int i = 0; i < velocidad.length; i++){
+	    out += velocidad[i];
+	    if(i < velocidad.length)
 		out += ", ";
 	}
 	return out+"]";
