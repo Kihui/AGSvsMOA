@@ -36,4 +36,9 @@ public class Posicion {
         hash = 71 * hash + y;
         return hash;
     }
+
+    @Override
+    public String toString(){
+	return "("+x+","+y+")";       	
+    }
 }

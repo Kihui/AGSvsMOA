@@ -74,4 +74,26 @@ public class Particula{
     public double getCosto(){
 	return costo;
     }
+
+    public double getEval(){
+	return campoM;
+    }
+
+    @Override
+    public String toString(){
+	String out = "Particula "+posicion+": ";
+	out += sRuta()+"\n";
+	out += "Costo: "+costo;
+	return out;	
+    }
+
+    private String sRuta(){
+	String out = "[";
+	for(int i = 0; i < ruta.length; i++){
+	    out += ruta[i];
+	    if(i < ruta.length)
+		out += ", ";
+	}
+	return out+"]";
+    }
 }

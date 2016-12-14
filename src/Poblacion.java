@@ -78,7 +78,7 @@ public class Poblacion{
     public void actualizaPosicion() {
     }
     
-    public void agrega(Particula p, FuncionCosto fun){
+    public void agrega(Particula p, FuncionObjetivo fun){
 	p.setCosto(fun.evaluar(p));
 	particulas.put(p.getPosicion(), p);
     }
@@ -109,8 +109,21 @@ public class Poblacion{
 	Posicion primero = new Posicion(1,1);
 	Particula peor = particulas.get(primero);
 	for(Particula part : getParticulas())
-	    if(part.getCosto() < peor.getCosto())
+	    if(part.getCosto() > peor.getCosto())
 		peor = part;
 	return peor;
+    }
+
+    public void nuevaGen(){
+	generacion++;
+    }
+
+    public Particula getMejorCalificado(){
+	Posicion primero = new Posicion(1,1);
+	Particula mejor = particulas.get(primero);
+	for(Particula part : getParticulas())
+	    if(part.getEval() > mejor.getEval())
+		mejor = part;
+	return mejor;
     }
 }
