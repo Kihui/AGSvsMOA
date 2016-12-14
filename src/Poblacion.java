@@ -52,6 +52,8 @@ public class Poblacion{
     
     public void evaluaFuerza() {
         for (Particula p : particulas.values()) {
+            for(int i = 0; i < p.size(); i++)
+                p.setFuerza(i, 0);
             for(Particula v : getVecinosParticula(p)) {
                 for(int i = 0; i < p.size(); i++) {
                     double suma = 0;
@@ -67,6 +69,12 @@ public class Poblacion{
         }
     }
 
+    public void evaluaVelocidad() {
+    }
+
+    public void actualizaPosicion() {
+    }
+    
     public void agrega(Particula p, FuncionCosto fun){
 	p.setCosto(fun.evaluar(p));
 	particulas.put(p.getPosicion(), p);
