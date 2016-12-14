@@ -43,8 +43,7 @@ public class Poblacion{
     }
 
     public void normalizarCamposM() {
-	System.out.println(particulas.keySet());
-	double bmin = particulas.get(new Posicion(0, 0)).getCampoM();
+	double bmin = particulas.get(new Posicion(1, 1)).getCampoM();
         //double bmin = particulas.get(new Posicion(0, 0)).getCampoM();
         double bmax = 0;
         for(Particula p : getParticulas()) {
@@ -135,8 +134,6 @@ public class Poblacion{
     }
     
     public void agrega(Particula p, FuncionObjetivo fun){
-	if(p==null)
-	    System.out.println("Huh?");
 	p.setCosto(fun.evaluar(p));
 	particulas.put(p.getPosicion(), p);
     }
@@ -178,7 +175,7 @@ public class Poblacion{
 
     public Particula getMejorCalificado(){
 	LinkedList<Particula> particles = getParticulas();
-	Particula mejor = particulas.get(0);
+	Particula mejor = particles.get(0);
 	for(Particula part : particles)
 	    if(part.getCampoM() > mejor.getCampoM())
 		mejor = part;
