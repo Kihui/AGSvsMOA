@@ -12,12 +12,14 @@ public class Poblacion{
     private int generacion;
     // Longitud y ancho de la estructura
     private int s;
+    private Random r;
 
     public Poblacion(int gen, int s) {
         generacion = gen;
         particulas = new HashMap<>();
 	//comprobacion de que s sea mayor que 2 please
         this.s = s;
+        r  = new Random(2);
     }
 
     public void evaluaMasa(int alfa, int rho) {
@@ -59,22 +61,23 @@ public class Poblacion{
                 p.setFuerza(i, 0);
             for(Particula v : getVecinosParticula(p)) {
                 for(int i = 0; i < p.size(); i++) {
-                    double suma = 0;
-                    for(int j = 0; j < p.size(); j++) {
-                        double dif = (p.getCiudad(j) - v.getCiudad(j)) / (p.size());
-                        suma += dif * dif;
-                    }
-                    double distancia = Math.sqrt((1/p.size()) * suma);
-                    double f = p.getFuerza(i) + ((p.getCiudad(i) - v.getCiudad(i))* v.getCampoM()) / distancia;
+                    double f = p.getFuerza(i) + ((p.getCiudad(i) - v.getCiudad(i))* v.getCampoM()) / getDistancia(p, v);
                     p.setFuerza(i, f);
                 }
             }
         }
     }
 
-    public void evaluaVelocidad() {
-        Random r = new Random(3);
+    private double getDistancia(Particula p, Particula v) {
+        double suma = 0;
+        for(int j = 0; j < p.size(); j++) {
+            double dif = (p.getCiudad(j) - v.getCiudad(j)) / (p.size());
+            suma += dif * dif;
+        }
+        return Math.sqrt((1/p.size()) * suma);
+    }
 
+    public void evaluaVelocidad() {
         // Evaluando velocidades
         for(Particula p : particulas.values()) {
             for(int i = 0; i < p.size(); i++) {
@@ -100,7 +103,6 @@ public class Poblacion{
 
     // Actualiza la posicion de todas las particulas menos de la que tiene menor costo
     public void actualizaPosicion(double costoMin) {
-        Random r = new Random(1);
         for(Particula p : particulas.values()) {
             if(p.getCosto() > costoMin) {
                 Particula[] vecinos = getVecinosParticula(p);
@@ -108,7 +110,7 @@ public class Poblacion{
                 for(int i = 1; i < 4; i++)
                     if(vecinos[i].getCampoM() > mv.getCampoM())
                         mv = vecinos[i];                
-                for(int i = 0; i < p.size(); i++)
+                for(int i = 1; i < p.size(); i++)
                     if(r.nextDouble() < p.getVelocidad(i))
                         permuta(p, mv, i);
             }
@@ -177,5 +179,37 @@ public class Poblacion{
 	    if(part.getEval() > mejor.getEval())
 		mejor = part;
 	return mejor;
+    }
+
+    private void permuta(Particula p, int i) {
+        int x = r.nextInt(p.size() - 1) + 1;
+        if(x != i){
+            int c1 = p.getCiudad(i);
+            p.agregaCiudad(i, p.getCiudad(x));
+            p.agregaCiudad(x, c1);
+        }            
+    }
+    
+    public void SRR(int t, int c) {
+        for(Particula p : particulas.values())
+            for(Particula v : getVecinosParticula(p))
+                if(getDistancia(p, v) < t){
+                    double[] probabilidades = new double[p.size()];
+                    double min = 0, max = 10000000;
+                    for(int i = 0; i < p.size(); i++) {
+                        probabilidades[i] = c * r.nextDouble() * p.size();
+                        if(probabilidades[i] > max)
+                            max = probabilidades[i];
+                        if(probabilidades[i] < min)
+                            min = probabilidades[i];
+                    }
+                    for(int i = 0; i < p.size(); i++)
+                        probabilidades[i] = (probabilidades[i] -  min) / ( max - min);
+                    for(int i = 1; i < p.size(); i++)
+                        if(r.nextDouble() < probabilidades[i])
+                            permuta(p, i);                    
+                }         
+            
+        
     }
 }
