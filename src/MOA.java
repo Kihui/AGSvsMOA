@@ -11,20 +11,21 @@ public class MOA{
     private int alpha;
     private int rho;
     private Poblacion poblacion;
-    private int s,maxgen; //tamaño y maximo número de generaciones
+    private int s,maxGen; //tamaño y maximo número de generaciones
     private int ciudades;
-    private FuncionCosto costFun;
+    //private FuncionCosto objFun;
+    private FuncionObjetivo objFun;
 
     /**
      * @param size el alto y ancho de la cuadricula,
      * por tanto el tamaño de la población es size*size
      */
-    public MOA(int alpha, int rho, int s, int maxgen, int ciudades, FuncionCosto costFun){
+    public MOA(int alpha, int rho, int s, int maxGen, int ciudades, FuncionObjetivo objFun){
 	this.alpha = alpha;
 	this.rho = rho;
-	this.maxgen = maxgen;
+	this.maxGen = maxGen;
 	this.ciudades = ciudades;
-	this.costFun = costFun;
+	this.objFun = objFun;
     }
 
     private Poblacion randomValidP(){
@@ -39,9 +40,28 @@ public class MOA{
 		    int random = r.ints(1,0,cities.size()).findFirst().getAsInt();
 		    nueva.agregaCiudad(k,cities.remove(random));
 		}
-		out.agrega(nueva, costFun);
+		out.agrega(nueva, objFun);
 	    }
 	return out;
+    }
+
+    private void iteracion(Poblacion actual){
+	int mejorCosto = objFun.evaluar(actual);
+	actual.normalizarCamposM();
+	actual.evaluaMasa(alpha, rho);
+	actual.evaluaFuerza();
+	actual.actualizaPosicion(mejorCosto);
+
+	actual.nuevaGen();
+	//notthereyet
+    }
+
+    public void run(){
+	Poblacion p = randomValidP();
+	for(int i = 1; i <= maxGen; i++){
+	    iteracion(p);
+	    System.out.println(p.getMejorCalificado());
+	}
     }
 
     private ArrayList<Integer> cities(){
