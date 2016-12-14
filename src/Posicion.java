@@ -37,6 +37,12 @@ public class Posicion {
         return hash;
     }
 
+    /*
+    @Override
+    public int hashCode() {
+	return toString().hashCode();
+    }*/
+
     @Override
     public String toString(){
 	return "("+x+","+y+")";       	

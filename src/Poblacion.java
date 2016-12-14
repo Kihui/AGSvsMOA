@@ -41,9 +41,11 @@ public class Poblacion{
     }
 
     public void normalizarCamposM() {
-        double bmin = particulas.get(new Posicion(0, 0)).getCampoM();
+	System.out.println(particulas.keySet());
+	double bmin = particulas.get(new Posicion(0, 0)).getCampoM();
+        //double bmin = particulas.get(new Posicion(0, 0)).getCampoM();
         double bmax = 0;
-        for(Particula p : particulas.values()) {
+        for(Particula p : getParticulas()) {
             if(p.getCampoM() < bmin)
                 bmin = p.getCampoM();
             if(p.getCampoM() > bmax)
@@ -131,6 +133,8 @@ public class Poblacion{
     }
     
     public void agrega(Particula p, FuncionObjetivo fun){
+	if(p==null)
+	    System.out.println("Huh?");
 	p.setCosto(fun.evaluar(p));
 	particulas.put(p.getPosicion(), p);
     }
@@ -149,18 +153,18 @@ public class Poblacion{
     }
 
     public Particula getMejor(){
-	Posicion primero = new Posicion(1,1);
-	Particula mejor = particulas.get(primero);
-	for(Particula part : getParticulas())
+	LinkedList<Particula> particles = getParticulas();
+	Particula mejor = particles.get(0);
+	for(Particula part : particles)
 	    if(part.getCosto() < mejor.getCosto())
 		mejor = part;
 	return mejor;
     }
 
     public Particula getPeor(){
-	Posicion primero = new Posicion(1,1);
-	Particula peor = particulas.get(primero);
-	for(Particula part : getParticulas())
+	LinkedList<Particula> particles = getParticulas();
+	Particula peor = particles.element();
+	for(Particula part : particles)
 	    if(part.getCosto() > peor.getCosto())
 		peor = part;
 	return peor;
@@ -171,10 +175,10 @@ public class Poblacion{
     }
 
     public Particula getMejorCalificado(){
-	Posicion primero = new Posicion(1,1);
-	Particula mejor = particulas.get(primero);
-	for(Particula part : getParticulas())
-	    if(part.getEval() > mejor.getEval())
+	LinkedList<Particula> particles = getParticulas();
+	Particula mejor = particulas.get(0);
+	for(Particula part : particles)
+	    if(part.getCampoM() > mejor.getCampoM())
 		mejor = part;
 	return mejor;
     }

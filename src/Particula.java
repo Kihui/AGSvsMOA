@@ -85,10 +85,6 @@ public class Particula{
 	return costo;
     }
 
-    public double getEval(){
-	return campoM;
-    }
-
     @Override
     public String toString(){
 	String out = "Particula "+posicion+": ";

@@ -26,13 +26,14 @@ public class MOA{
 	this.maxGen = maxGen;
 	this.ciudades = ciudades;
 	this.objFun = objFun;
+	this.s = s;
     }
 
     private Poblacion randomValidP(){
 	Poblacion out = new Poblacion(1,s);
 	Random r = new Random(4);
-	for(int i = 1; i < s; i++ )
-	    for(int j = 1; j < s; j++){
+	for(int i = 1; i <= s; i++ )
+	    for(int j = 1; j <= s; j++){
 		ArrayList<Integer> cities = cities();
 		Particula nueva = new Particula(ciudades,i,j);
 		nueva.agregaCiudad(0,cities.remove(0));
@@ -47,6 +48,7 @@ public class MOA{
 
     private void iteracion(Poblacion actual){
 	double mejorCosto = objFun.evaluar(actual);
+	System.out.println("Normalizando");
 	actual.normalizarCamposM();
 	actual.evaluaMasa(alpha, rho);
 	actual.evaluaFuerza();
@@ -58,6 +60,8 @@ public class MOA{
 
     public void run(){
 	Poblacion p = randomValidP();
+	if(p==null)
+	    System.out.println("Esta madre es null");
 	for(int i = 1; i <= maxGen; i++){
 	    iteracion(p);
 	    System.out.println(p.getMejorCalificado());

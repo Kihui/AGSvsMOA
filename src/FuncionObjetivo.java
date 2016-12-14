@@ -20,11 +20,9 @@ public class FuncionObjetivo{
         return fitness;
     }
 
-    public double evaluar(Poblacion p){
-
+    public double evaluar(Poblacion p){	
         double maxfit = p.getPeor().getCosto();
         double minfit = p.getMejor().getCosto();
-        
         for(Particula part : p.getParticulas()){
             double eval = 0;
             eval = (maxfit + minfit) - part.getCosto();
