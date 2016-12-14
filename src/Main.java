@@ -30,7 +30,9 @@ public class Main{
 	
         if(problema == null)
             return;
-	else
-	    System.out.println("Archivo: \'"+argumenta[0]+"\' abierto correctamente");
+	 int[] ciudades = problema.getDistanceTable().listNodes();
+	 FuncionObjetivo objFun = new FuncionObjetivo(problema.getDistanceTable());
+	 MOA moa = new MOA(100,100,15,200,ciudades.length,objFun);
+	 moa.run();
     }
 }
