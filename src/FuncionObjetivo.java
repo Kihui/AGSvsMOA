@@ -17,7 +17,8 @@ public class FuncionObjetivo{
         for(int i = 0; i < p.size() - 1;i++)
             fitness += dt.getDistanceBetween(p.getCiudad(i),p.getCiudad(i+1));
         fitness += dt.getDistanceBetween(p.getCiudad(0),p.getCiudad(p.size()-1));
-        return fitness;
+        p.setCosto(fitness);
+	return fitness;
     }
 
     public double evaluar(Poblacion p){	

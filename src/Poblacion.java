@@ -136,7 +136,7 @@ public class Poblacion{
     }
     
     public void agrega(Particula p, FuncionObjetivo fun){
-	p.setCosto(fun.evaluar(p));
+	fun.evaluar(p);
 	particulas.put(p.getPosicion(), p);
     }
 

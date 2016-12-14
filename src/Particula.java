@@ -95,7 +95,7 @@ public class Particula{
 
     @Override
     public String toString(){
-	String out = "Particula "+posicion+": ";
+	String out = "Partícula "+posicion+": ";
 	out += sRuta()+"\n";
         out += "Velocidad" + sVel()+"\n";
 	out += "Costo: "+costo;
@@ -106,7 +106,7 @@ public class Particula{
 	String out = "[";
 	for(int i = 0; i < ruta.length; i++){
 	    out += ruta[i];
-	    if(i < ruta.length)
+	    if(i < ruta.length-1)
 		out += ", ";
 	}
 	return out+"]";
@@ -116,7 +116,7 @@ public class Particula{
 	String out = "[";
 	for(int i = 0; i < velocidad.length; i++){
 	    out += velocidad[i];
-	    if(i < velocidad.length)
+	    if(i < velocidad.length-1)
 		out += ", ";
 	}
 	return out+"]";
