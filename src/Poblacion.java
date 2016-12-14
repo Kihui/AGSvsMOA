@@ -13,13 +13,15 @@ public class Poblacion{
     // Longitud y ancho de la estructura
     private int s;
     private Random r;
-
-    public Poblacion(int gen, int s) {
+    private FuncionObjetivo objFun;
+    
+    public Poblacion(int gen, int s, FuncionObjetivo fun, int seed) {
         generacion = gen;
         particulas = new HashMap<>();
 	//comprobacion de que s sea mayor que 2 please
         this.s = s;
-        r  = new Random(2);
+        r  = new Random(seed);
+        objFun = fun;
     }
 
     public void evaluaMasa(int alfa, int rho) {
@@ -113,14 +115,16 @@ public class Poblacion{
                 Particula[] vecinos = getVecinosParticula(p);
                 Particula mv = vecinos[0];
                 for(int i = 1; i < 4; i++)
-                    if(vecinos[i].getCampoM() > mv.getCampoM())
+                    if(vecinos[i].getCosto() < mv.getCosto())
                         mv = vecinos[i];                
                 for(int i = 1; i < p.size(); i++)
                     if(r.nextDouble() <= p.getVelocidad(i)) {
                         permuta(p, mv, i);
                     }
             }
+            objFun.evaluar(p);
         }
+        objFun.evaluar(this);
     }
 
     private void permuta(Particula p, Particula v, int i) {
@@ -198,7 +202,7 @@ public class Poblacion{
     }
     
     public void SRR(double t, double c) {
-        for(Particula p : particulas.values())
+        for(Particula p : particulas.values()) {
             for(Particula v : getVecinosParticula(p))
                 if(getDistancia(p, v) < t){
                     double[] probabilidades = new double[p.size()];
@@ -216,7 +220,10 @@ public class Poblacion{
                     for(int i = 1; i < p.size(); i++)
                         if(r.nextDouble() <= probabilidades[i])
                             permuta(p, i);
-                }                    
+                }
+            objFun.evaluar(p);
+        }
+        objFun.evaluar(this);
     }
 
     @Override
