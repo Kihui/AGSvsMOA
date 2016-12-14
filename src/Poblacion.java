@@ -117,7 +117,7 @@ public class Poblacion{
                         mv = vecinos[i];                
                 for(int i = 1; i < p.size(); i++)
                     if(r.nextDouble() <= p.getVelocidad(i)) {
-                        permuta(p, i);
+                        permuta(p, mv, i);
                     }
             }
         }
