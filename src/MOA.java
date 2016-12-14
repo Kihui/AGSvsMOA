@@ -30,7 +30,8 @@ public class MOA{
     }
 
     private Poblacion randomValidP(){
-	Poblacion out = new Poblacion(1,s);
+        // Constructor de pobacion: (generacion, S, funcionObj, semilla)
+	Poblacion out = new Poblacion(1,s, objFun, 1);
 	Random r = new Random(4);
 	for(int i = 1; i <= s; i++ )
 	    for(int j = 1; j <= s; j++){
@@ -63,11 +64,13 @@ public class MOA{
 
     public void run(){
 	Poblacion p = randomValidP();
-	for(int i = 1; i <= maxGen; i++){
+	for(int i = 1; i < maxGen; i++){
 	    System.out.println("\nGeneración: "+p.getGeneracion());
-	    System.out.println("Mejor " + p.getMejorCalificado());
+            System.out.println("Mejor " + p.getMejorCalificado());
 	    iteracion(p);
 	}
+        System.out.println("\nGeneración: "+p.getGeneracion());
+        System.out.println("Mejor " + p.getMejorCalificado());
     }
 
     private ArrayList<Integer> cities(){

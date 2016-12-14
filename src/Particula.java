@@ -97,7 +97,6 @@ public class Particula{
     public String toString(){
 	String out = "Partícula "+posicion+": ";
 	out += sRuta()+"\n";
-        out += "Velocidad" + sVel()+"\n";
 	out += "Costo: "+costo;
 	return out;	
     }
@@ -112,13 +111,4 @@ public class Particula{
 	return out+"]";
     }
 
-    private String sVel(){
-	String out = "[";
-	for(int i = 0; i < velocidad.length; i++){
-	    out += velocidad[i];
-	    if(i < velocidad.length-1)
-		out += ", ";
-	}
-	return out+"]";
-    }
 }

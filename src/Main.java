@@ -33,6 +33,10 @@ public class Main{
 	 int[] ciudades = problema.getDistanceTable().listNodes();
 	 FuncionObjetivo objFun = new FuncionObjetivo(problema.getDistanceTable());
 	 MOA moa = new MOA(100,100,15,600,ciudades.length,objFun);
+         long start = System.currentTimeMillis();
 	 moa.run();
+         long et = System.currentTimeMillis() - start;
+         System.out.println("Tiempo: " + et/1000F);
+         
     }
 }
