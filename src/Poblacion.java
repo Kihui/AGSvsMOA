@@ -140,6 +140,10 @@ public class Poblacion{
 	particulas.put(p.getPosicion(), p);
     }
 
+    public void agrega(Particula p){
+	particulas.put(p.getPosicion(), p);
+    }
+
     public int getGeneracion(){
 	return generacion;
     }
