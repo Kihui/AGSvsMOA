@@ -44,6 +44,11 @@ public class MOA{
 	return out;
     }
 
+    private void iteracion(Poblacion actual){
+	objFun.evaluar(actual);
+	//notthereyet
+    }
+
     private ArrayList<Integer> cities(){
 	ArrayList<Integer> cities = new ArrayList<>();
 	for(int m = 1; m <= ciudades; m++)

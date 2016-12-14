@@ -70,4 +70,8 @@ public class Particula{
     public void setCosto(double costo){
 	this.costo = costo;
     }
+
+    public double getCosto(){
+	return costo;
+    }
 }

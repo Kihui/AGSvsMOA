@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /** 
  * Clase para modelar la población de partículas 
@@ -14,6 +15,7 @@ public class Poblacion{
     public Poblacion(int gen, int s) {
         generacion = gen;
         particulas = new HashMap<>();
+	//comprobacion de que s sea mayor que 2 please
         this.s = s;
     }
 
@@ -79,5 +81,36 @@ public class Poblacion{
     public void agrega(Particula p, FuncionCosto fun){
 	p.setCosto(fun.evaluar(p));
 	particulas.put(p.getPosicion(), p);
-    }    
+    }
+
+    public int getGeneracion(){
+	return generacion;
+    }
+
+    public int getS(){
+	return s;
+    }
+
+    public LinkedList<Particula> getParticulas(){
+	LinkedList<Particula> parts = new LinkedList<>(particulas.values());
+	return parts;
+    }
+
+    public Particula getMejor(){
+	Posicion primero = new Posicion(1,1);
+	Particula mejor = particulas.get(primero);
+	for(Particula part : getParticulas())
+	    if(part.getCosto() < mejor.getCosto())
+		mejor = part;
+	return mejor;
+    }
+
+    public Particula getPeor(){
+	Posicion primero = new Posicion(1,1);
+	Particula peor = particulas.get(primero);
+	for(Particula part : getParticulas())
+	    if(part.getCosto() < peor.getCosto())
+		peor = part;
+	return peor;
+    }
 }
