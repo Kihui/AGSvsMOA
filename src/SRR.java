@@ -5,5 +5,8 @@
 public class SRR{
     /**Atributos**/
     private int csrr;
-    private int tsrr;    
+    private int tsrr;
+
+    public void SRR() {
+    }
 }
