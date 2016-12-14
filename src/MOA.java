@@ -46,7 +46,7 @@ public class MOA{
     }
 
     private void iteracion(Poblacion actual){
-	int mejorCosto = objFun.evaluar(actual);
+	double mejorCosto = objFun.evaluar(actual);
 	actual.normalizarCamposM();
 	actual.evaluaMasa(alpha, rho);
 	actual.evaluaFuerza();

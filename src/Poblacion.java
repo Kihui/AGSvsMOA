@@ -99,7 +99,7 @@ public class Poblacion{
     }
 
     // Actualiza la posicion de todas las particulas menos de la que tiene menor costo
-    public void actualizaPosicion(int costoMin) {
+    public void actualizaPosicion(double costoMin) {
         Random r = new Random(1);
         for(Particula p : particulas.values()) {
             if(p.getCosto() > costoMin) {
