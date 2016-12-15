@@ -14,6 +14,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{multicol}
 %\usepackage[document]{ragged2e}
 % Package to generate and customize Algorithm as per ACM style
 \usepackage[ruled]{algorithm2e}
@@ -27,7 +28,7 @@
 \date{Cómputo Evolutivo 2017-1 \\ Facultad de Ciencias UNAM \\ }
 \begin{document}
 \maketitle
-\section*{Introducción}
+\section{Introducción}
 \subsection*{Panorama general}
 Para este proyecto final decidimos realizar una comparación entre el Algoritmo Genético Simple (\textbf{AGS}) y el Algoritmo de Optimización Inspirado en Magnetismo (\textbf{MOA}),
 con un operador enfocado a la \textbf{exploración}, propuesto en el artículo\footnote{Magnetic-inspired optimization algorithms: Operators and structures} que escogimos para la exposición en clase.
@@ -60,7 +61,7 @@ considerable respecto a los PSO convencionales.
 
 Es considerado una de las debilidades de los PSO, el hecho de que sólo las mejores partículas, son las que
 tienen una repercusión significativa sobre las demás menos adaptadas, que no tienen incidencia en otras.
-En este sentido, estos algoritmos dejan fuera de consideración importante información que pueden contener las partículas con bajo grado de
+En este sentido, estos algoritmos dejan fuera de consideración, importante información que pueden contener las partículas con bajo grado de
 adaptación. Es por ello que en el esquema del MOA que revisamos, se considera la posibilidad de que todos las partículas cuenten con cierto
 potencial de atracción, independientemente de su grado de adaptación (aunque éste lo afecte en magnitud).
 
@@ -73,19 +74,19 @@ devenir un balance entre exploración y explotación.
 Siguiendo esa línea, las virtudes que supone el esquema del MOA parecen prometedoras frente a la contraparte de este proyecto, el AGS.
 
 
-\subsubsection*{MOA Básico}
+\subsection*{Herramientas}
 Aquí el beautiful pseudocode
 A partir de ahora, nos referiremos a la implementación del MOA como SRMOA, por el operador que incluye en su ejecución.
 
 \newpage
-\subsection*{Planteamiento}
-\subsubsection*{Objetivo}
+\section{Planteamiento}
+\subsection*{Objetivo}
 Determinar si el SRMOA (Tipo III) es una opción cuyo desempeño es competente respecto al algoritmo genético simple (AGS) en la resolución del problema del agente viajero (TSP).
-\subsubsection*{Hipótesis}
+\subsection*{Hipótesis}
  Esperamos que ambos tengan un desempeño similar para las distintas instancias del TSP. Creemos también que conforme la dimensión de las instancias del TSP crezcan, el SRMOA tendrá una mejora significativa respecto a instancias menores y pueda superar al AGS en tales magnitudes.  Respaldando ésta hipótesis tenemos las conclusiones del artículo sobre el MOA que mostraba que mientras mas crecía el problema, el SRMOA mejoraba su desempeño. Mientras que por otro lado nuestras pruebas con el AGS nos hacían ver que mientras más crecía el problema, disminuía el desempeño de éste algoritmo.
 
 Asimismo, suponemos que la implementación del SRMOA será más sencilla que la del AGS.
-\subsubsection*{Metodología}
+\subsection*{Metodología}
 Implementaremos el SRMOA y utilizaremos el AGS que previamente implementamos para el Proyecto 1. Probaremos los algoritmos con los archivos burma14, ulysses16, gr17, gr21 y ulysses22. Para cada archivo las tuplas de parámetros de las tablas siguientes un total de cinco veces. En conjunto se harán 25 corridas por algoritmo.\\
 
 
@@ -107,17 +108,35 @@ Y para el \textbf{SRMOA}:
 \end{tabularx}
 \end{center}
 
-Para ambos algoritmos, se fijará el tamaño de la \textbf{población} en 225 individuos y se establecerá 1000 como máximo número de \textbf{generaciones} (a manera de detención).
+Para ambos algoritmos, se fijará el tamaño de la \textbf{población} en 225 individuos y se establecerá 1000 como máximo número de \textbf{generaciones} (siendo este el criterio de detención de las iteraciones).
 
 Para hacer la comparación entre ambos algoritmos graficaremos el exceso porcentual promedio de peso del mejor circuito vs el número de generaciones de cada archivo para cada algoritmo, a demás del promedio del conjunto de los cinco archivos. Compararemos también el tiempo promedio que se tardó cada algoritmo para correr cada archivo.
 
-\subsection*{Especificación}
-\subsubsection*{Codificación del problema}
+\newpage
 
+\section{Especificación}
+\subsubsection*{Codificación del problema}
+La codificación del problema se realizó de manera similar a la codificación del AGS implementado en el primer proyecto de la materia, puesto que
+cada individuo contaba tanto en su fenotipo como en su genotipo, una permutación de las ciudades sin repeticiones de la instancia del TSP; el arreglo asociado, representa la ruta propuesta por el individuo.
+
+En este caso, se trata de partículas con una ruta asociada, un vector de ciudades que determinan la posición de dicha partícula en el espacio de
+búsqueda y que será alterada dependendiendo de la velocidad calculada por el cociente de la fuerza de atracción ejercida por sus vecinos y su masa,
+junto con un factor aleatorio (\ref{sec:vel}).
+Por ejemplo, para una partícula $x$ con posición $i,j$ en la estructura celular en la generación $t$,
+$x_{ij}^t = [1,3,2,4,5]$, la ruta propuesta sería: $C_1 \to C_3 \to C_2 \to C_4 \to C_5 \to C_1$, $C_i \in P$, considerando a $P$ el conjunto de ciudades de la instancia de TSP.
+
+Con el fin de evitar la implementación de un corrector de partículas, la generación de la población inicial aleatoria, se realizó con cuidado de asignar cada ciudad elegida aleatoriamente de $P$ sólo una vez por individuo. 
 \subsubsection*{Evaluación de la población}
 
-\subsubsection*{Operadores}
+\subsubsection*{Campos magnéticos}
+\subsubsection*{Masa}
+\subsubsection*{Fuerza de atracción}
 
+\subsection*{Operadores}
+\subsubsection*{Velocidad}\label{sec:vel}
+
+\subsubsection*{SRR}
+\newpage
 \section*{Experimentación}
 
 \section*{Conclusiones}
