@@ -73,9 +73,43 @@ devenir un balance entre exploración y explotación.
 
 Siguiendo esa línea, las virtudes que supone el esquema del MOA parecen prometedoras frente a la contraparte de este proyecto, el AGS.
 
-
+\newpage
 \subsection*{Herramientas}
 Aquí el beautiful pseudocode
+\begin{algorithm}[t]
+%\SetAlgoNoLine
+%\KwIn{Archivo con instancia del Problema del Agente Viajero de TSPLIB}
+%\KwOut{Mejor partícula por generación}
+$t \gets 0$;
+$X^t \gets randomValidPopulation$()\;
+\Repeat{t = maxGen}{
+  $t \gets t+1$\;
+  \For{each $x$ in $X^t$}
+  {
+   evaluate $x$ and store performance in magnetic fields $B^t$;    
+  }
+  {
+    Normalize  $B^t$\;
+    \For{each $x$ in $X^t$}{
+      evaluate mass of $x$ and store it in $M^t$\;
+    }
+    \For{all $x_{ij}^{t}$ in $X^t$}{
+      $F_{ij} \gets 0$\;
+      find $Nij$\;
+      \For{each $x_{uv}^{t}$ in $N_{ij}$}{
+        $F_{ij} \gets F_{ij} +  \displaystyle{(x_{uv}^t-x_{ij}^t)\times B^t \over D(x_{ij}^t,x_{uv}^t)}$;
+      }
+    }
+    \For{all $x_{ij}^t$ in $X^t$}{
+      $v_{ij,k}^{t+1}$ = $\displaystyle{F_{ij,k} \over M_{ij,k}} \times R(u_k,l_k)$\;
+      $x_{ij,k}^{t+1}$ = $x_{ij,k}^{t} + v_{ij,k}^{t+1}$ 
+    }
+  }
+}
+
+\caption{Magnetic-inspired Optimization Algorithm (MOA)}
+\label{alg:one}
+\end{algorithm}
 A partir de ahora, nos referiremos a la implementación del MOA como SRMOA, por el operador que incluye en su ejecución.
 
 \newpage
