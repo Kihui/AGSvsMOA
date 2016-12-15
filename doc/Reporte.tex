@@ -122,10 +122,12 @@ cada individuo contaba tanto en su fenotipo como en su genotipo, una permutació
 En este caso, se trata de partículas con una ruta asociada, un vector de ciudades que determinan la posición de dicha partícula en el espacio de
 búsqueda y que será alterada dependendiendo de la velocidad calculada por el cociente de la fuerza de atracción ejercida por sus vecinos y su masa,
 junto con un factor aleatorio (\ref{sec:vel}).
+
 Por ejemplo, para una partícula $x$ con posición $i,j$ en la estructura celular en la generación $t$,
 $x_{ij}^t = [1,3,2,4,5]$, la ruta propuesta sería: $C_1 \to C_3 \to C_2 \to C_4 \to C_5 \to C_1$, $C_i \in P$, considerando a $P$ el conjunto de ciudades de la instancia de TSP.
 
-Con el fin de evitar la implementación de un corrector de partículas, la generación de la población inicial aleatoria, se realizó con cuidado de asignar cada ciudad elegida aleatoriamente de $P$ sólo una vez por individuo. 
+Con el fin de evitar la implementación de un corrector de partículas, la generación de la población inicial aleatoria, se realizó con cuidado de asignar cada ciudad elegida aleatoriamente de $P$ sólo una vez por individuo. Acorde a esa intención, el operador velocidad que afecta la posición de una partícula, i.e. su ruta, realiza permutaciones entre las ciudades de dicha partícula únicamente, por lo que no existe el riesgo de invalidar una propuesta de ``tour'' al aplicarlo.
+
 \subsubsection*{Evaluación de la población}
 
 \subsubsection*{Campos magnéticos}
