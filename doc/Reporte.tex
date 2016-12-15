@@ -15,6 +15,7 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{multicol}
+\graphicspath { {media/} }
 %\usepackage[document]{ragged2e}
 % Package to generate and customize Algorithm as per ACM style
 \usepackage[ruled]{algorithm2e}
@@ -75,8 +76,12 @@ Siguiendo esa línea, las virtudes que supone el esquema del MOA parecen promete
 
 \newpage
 \subsection*{Herramientas}
-Aquí el beautiful pseudocode
-\begin{algorithm}[t]
+Como herramienta fundamental, proporcionamos el pseudo-código del MOA básico que no contempla más operadores que el de actualización de posición de una partícula dada su velocidad.\\
+
+
+\begin{multicols}{2}
+  \begin{center}
+    \begin{algorithm}[H]
 %\SetAlgoNoLine
 %\KwIn{Archivo con instancia del Problema del Agente Viajero de TSPLIB}
 %\KwOut{Mejor partícula por generación}
@@ -102,7 +107,7 @@ $X^t \gets randomValidPopulation$()\;
     }
     \For{all $x_{ij}^t$ in $X^t$}{
       $v_{ij,k}^{t+1}$ = $\displaystyle{F_{ij,k} \over M_{ij,k}} \times R(u_k,l_k)$\;
-      $x_{ij,k}^{t+1}$ = $x_{ij,k}^{t} + v_{ij,k}^{t+1}$ 
+      $x_{ij,k}^{t+1}$ = $x_{ij,k}^{t} + v_{ij,k}^{t+1}$\;
     }
   }
 }
@@ -110,8 +115,24 @@ $X^t \gets randomValidPopulation$()\;
 \caption{Magnetic-inspired Optimization Algorithm (MOA)}
 \label{alg:one}
 \end{algorithm}
-A partir de ahora, nos referiremos a la implementación del MOA como SRMOA, por el operador que incluye en su ejecución.
+\end{center}
+\noindent
+$N_{ij}$ := Conjunto de vecinos de la partícula $x_{ij}$.\\
+$F_{ij}$ := Fuerza de atracción ejercida sobre la partícula $x_{ij}$.\\
+$D(x_1,x_2)$ := Distancia entre $x_1$ y $x_2$.\\
 
+La figura siguiente es el esquema del operador de repulsión SRR,
+\begin{center}
+  \centering
+  \includegraphics[width=.5\textwidth]{SRR}
+  %\caption{Representación del umbral de acción del operador SRR.}
+\end{center}
+En ella se puede apreciar el umbral de distancia mínima $T_{SRR}$, que debe existir entre partículas. Pasado el umbral, se aplica el operador de repulsión.
+\end{multicols}
+Más detalles sobre el diseño de la implementación se pueden encontrar en la Sección \ref{sec:esp} y siempre se puede consultar el código fuente
+del proyecto en el directorio \textit{src/}.\\
+
+A partir de ahora, nos referiremos a la implementación del MOA como SRMOA, por el operador que incluye en su ejecución.
 \newpage
 \section{Planteamiento}
 \subsection*{Objetivo}
@@ -148,7 +169,7 @@ Para hacer la comparación entre ambos algoritmos graficaremos el exceso porcent
 
 \newpage
 
-\section{Especificación}
+\section{Especificación}\label{sec:esp}
 \subsubsection*{Codificación del problema}
 La codificación del problema se realizó de manera similar a la codificación del AGS implementado en el primer proyecto de la materia, puesto que
 cada individuo contaba tanto en su fenotipo como en su genotipo, una permutación de las ciudades sin repeticiones de la instancia del TSP; el arreglo asociado, representa la ruta propuesta por el individuo.
@@ -163,7 +184,7 @@ $x_{ij}^t = [1,3,2,4,5]$, la ruta propuesta sería: $C_1 \to C_3 \to C_2 \to C_4
 Con el fin de evitar la implementación de un corrector de partículas, la generación de la población inicial aleatoria, se realizó con cuidado de asignar cada ciudad elegida aleatoriamente de $P$ sólo una vez por individuo. Acorde a esa intención, el operador velocidad que afecta la posición de una partícula, i.e. su ruta, realiza permutaciones entre las ciudades de dicha partícula únicamente, por lo que no existe el riesgo de invalidar una propuesta de ``tour'' al aplicarlo.
 
 \subsubsection*{Evaluación de la población}
-
+La evaluación de la población en un primer momento se realiza calculando el costo de la ruta propuesta por cada partícula.
 \subsubsection*{Campos magnéticos}
 \subsubsection*{Masa}
 \subsubsection*{Fuerza de atracción}
