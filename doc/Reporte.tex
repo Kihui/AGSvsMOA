@@ -13,24 +13,106 @@
 \usepackage{listings}
 \usepackage{graphicx}
 \usepackage{hyperref}
-%\usepackage{graphicx}
+\usepackage{graphicx}
+%\usepackage[document]{ragged2e}
+% Package to generate and customize Algorithm as per ACM style
+\usepackage[ruled]{algorithm2e}
+\renewcommand{\algorithmcfname}{ALGORITHM}
 
-%Preambulo
-\title{Cómputo Evolutivo \\ Comparación entre el Algoritmo Genético Simple (\textit{SGA}) )y el Algoritmo de Optimización Inspirado en Magnetismo con repulsión (\textit{SRMOA}) aplicados al problema del Agente Viajero (\textit{TSP})}
+% Preambulo
+\title{Comparación entre el Algoritmo Genético Simple y el Algoritmo de Optimización Inspirado en Magnetismo con Repulsión de Corto Alcance aplicados al Problema del Agente Viajero}
+
 \author{Andrea Itzel González Vargas \\
   Carlos Gerardo Acosta Hernández}
-\date{Facultad de Ciencias UNAM \\ }
+\date{Cómputo Evolutivo 2017-1 \\ Facultad de Ciencias UNAM \\ }
 \begin{document}
 \maketitle
 \section*{Introducción}
 \subsection*{Panorama general}
+Para este proyecto final decidimos realizar una comparación entre el Algoritmo Genético Simple (\textbf{AGS}) y el Algoritmo de Optimización Inspirado en Magnetismo (\textbf{MOA}),
+con un operador enfocado a la \textbf{exploración}, propuesto en el artículo\footnote{Magnetic-inspired optimization algorithms: Operators and structures} que escogimos para la exposición en clase.
+
+Como punto de referencia, elegimos implementar un programa similar al que hicimos primero para encontrar soluciones óptimas de
+varias instancias del Problema del Agente Viajero (\textbf{TSP}) usando el MOA. Lo anterior por nuestra experiencia previa con el desarrollo del primer proyecto\footnote{Referencia al repositorio del primer proyecto}, que nos sirvió de guía para llevar a cabo la construcción de nuestra propia versión de un MOA aplicado a TSP.
+
+La idea es verificar si el MOA, siendo una propuesta reciente\footnote{Propuesto por bla y bla} en el mundo del cómputo evolutivo, es una buena opción para resolver problemas de este tipo como ya hemos visto con el AGS y decidir si es en algún aspecto competitivo respecto a su adversario.
+La entrada de ambos programas es una instancia del TSP, para la que ambos algoritmos mostrarán la mejor solución encontrada en cada una de sus iteraciones.
+
+Para manejar y procesar las instancias del TSP, proporcionadas por la colección \textit{TSPLIB}\footnote{pagina oficial} y recopiladas en archivos individuales bajo el directorio \textit{tsp/}, hacemos uso de una
+biblioteca para \textit{Java}, llamada \textit{TSPLIB4J}\footnote{referencia a su repo de github}.
+
+
+\subsection*{Marco teórico}
+Creemos que ya no es necesario ser muy específicos respecto al AGS implementado y presentado previamente en nuestro primer proyecto, por lo que esta
+sección referirá únicamente al MOA.\\
+
+En la teoría de los campos magnéticos, las partículas pueden atraerse o repelerse unas con otras dependiendo de su polaridad.
+Como muchos algoritmos en el campo de estudio de la optimización, el MOA es una propuesta inspirada en este principio observado en la naturaleza.
+Para este algoritmo, el conjunto de posibles soluciones son partículas con propiedades magnéticas, diseminadas en el espacio de búsqueda, donde cada
+partícula es capaz de incidir una sobre la otra con una fuerza de atracción de largo alcance -tal como el concepto de fuerza electromagnética.
+
+Similar a los algoritmos de optimización por enjambre o nube de partículas (\textbf{PSO}\footnote{En inglés: Particle Swarm Optimization}), donde
+los individuos buscan imitar a aquel con mayor grado de adaptación, las partículas en el MOA con mejor calificación poseen masa y campo
+magnético mayores, resultando en una mayor fuerza de atracción ejercida sobre las otras partículas.
+
+Por un lado, este comportamiento cubre el concepto de explotación revisado en nuestro curso, sin embargo, el MOA cuenta además con una mejora
+considerable respecto a los PSO convencionales.
+
+Es considerado una de las debilidades de los PSO, el hecho de que sólo las mejores partículas, son las que
+tienen una repercusión significativa sobre las demás menos adaptadas, que no tienen incidencia en otras.
+En este sentido, estos algoritmos dejan fuera de consideración importante información que pueden contener las partículas con bajo grado de
+adaptación. Es por ello que en el esquema del MOA que revisamos, se considera la posibilidad de que todos las partículas cuenten con cierto
+potencial de atracción, independientemente de su grado de adaptación (aunque éste lo afecte en magnitud).
+
+Asimísmo, se incluye un operador de repulsión de corto alcance (\textbf{SRR}\footnote{En inglés: Short-Range Repulsion}). Este operador -que explicaremos más ampliamente en secciones posteriores-, permite que el algoritmo no se concentre únicamente en las partículas más cercanas a la solución, pues actúa como a manera de repulsión cuando la distancia entre dos partículas es menor a cierto umbral predefinido, manteniendo la diversidad y previniendo una convergencia prematura en óptimos locales.
+
+Además del esfuerzo implementado para la optimización de ``tours'' en las instancias del TSP, el MOA ya ha sido puesto a prueba en varias aplicaciones de Inteligencia Artificial, como el entrenamiento de redes neuronales y ha sido propuesta ya una versión binaria del algoritmo.
+Las implementaciones de los MOA, resultan en un paradigma dual de interacción entre partículas con la fuerza de repulsión/atracción, que puede
+devenir un balance entre exploración y explotación.
+
+Siguiendo esa línea, las virtudes que supone el esquema del MOA parecen prometedoras frente a la contraparte de este proyecto, el AGS.
+
+
+\subsubsection*{MOA Básico}
+Aquí el beautiful pseudocode
+A partir de ahora, nos referiremos a la implementación del MOA como SRMOA, por el operador que incluye en su ejecución.
 
 \newpage
+\subsection*{Planteamiento}
+\subsubsection*{Objetivo}
+Determinar si el SRMOA (Tipo III) es una opción cuyo desempeño es competente respecto al algoritmo genético simple (AGS) en la resolución del problema del agente viajero (TSP).
+\subsubsection*{Hipótesis}
+ Esperamos que ambos tengan un desempeño similar para las distintas instancias del TSP. Creemos también que conforme la dimensión de las instancias del TSP crezcan, el SRMOA tendrá una mejora significativa respecto a instancias menores y pueda superar al AGS en tales magnitudes.  Respaldando ésta hipótesis tenemos las conclusiones del artículo sobre el MOA que mostraba que mientras mas crecía el problema, el SRMOA mejoraba su desempeño. Mientras que por otro lado nuestras pruebas con el AGS nos hacían ver que mientras más crecía el problema, disminuía el desempeño de éste algoritmo.
+
+Asimismo, suponemos que la implementación del SRMOA será más sencilla que la del AGS.
+\subsubsection*{Metodología}
+Implementaremos el SRMOA y utilizaremos el AGS que previamente implementamos para el Proyecto 1. Probaremos los algoritmos con los archivos burma14, ulysses16, gr17, gr21 y ulysses22. Para cada archivo las tuplas de parámetros de las tablas siguientes un total de cinco veces. En conjunto se harán 25 corridas por algoritmo.\\
+
+
+Los \textbf{parámetros} que se utilizarán para el \textbf{AGS} serán:
+\begin{center}
+\begin{tabularx}{0.25\textwidth}{|X|X|}
+  \hline
+\textbf{Pc} &  \textbf{Pm} \\ \hline
+0.6 & 0.001 \\ \hline
+\end{tabularx}
+\end{center}
+
+Y para el \textbf{SRMOA}:
+\begin{center}
+\begin{tabularx}{0.30\textwidth}{|X|X|X|X|}
+  \hline
+\textbf{$\alpha$} &  \textbf{$\rho$} & \textbf{$T_{SRR}$} & \textbf{$C_{SRR}$}\\ \hline
+100 & 100 & 1 & 0.1 \\ \hline
+\end{tabularx}
+\end{center}
+
+Para ambos algoritmos, se fijará el tamaño de la \textbf{población} en 225 individuos y se establecerá 1000 como máximo número de \textbf{generaciones} (a manera de detención).
+
+Para hacer la comparación entre ambos algoritmos graficaremos el exceso porcentual promedio de peso del mejor circuito vs el número de generaciones de cada archivo para cada algoritmo, a demás del promedio del conjunto de los cinco archivos. Compararemos también el tiempo promedio que se tardó cada algoritmo para correr cada archivo.
+
 \subsection*{Especificación}
-
 \subsubsection*{Codificación del problema}
-
-\subsubsection*{Criterio de detención}
 
 \subsubsection*{Evaluación de la población}
 

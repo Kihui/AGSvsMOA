@@ -2,3 +2,6 @@
 *~
 MOA.jar
 build/
+*.log
+*.aux
+*.out
