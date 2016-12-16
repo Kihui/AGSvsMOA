@@ -82,9 +82,9 @@ Como herramienta fundamental, proporcionamos el pseudo-código del MOA básico q
 
 
 
-  \begin{center}
-    \begin{algorithm}[H]
-%\SetAlgoNoLine
+\label{alg:moa}
+  \begin{algorithm}[H]
+    % \SetAlgoNoLine
 %\KwIn{Archivo con instancia del Problema del Agente Viajero de TSPLIB}
 %\KwOut{Mejor partícula por generación}
 $t \gets 0$;
@@ -115,14 +115,13 @@ $X^t \gets randomValidPopulation$()\;
 }
 
 \caption{Magnetic-inspired Optimization Algorithm (MOA)}
-\label{alg:one}
 \end{algorithm}
-\end{center}
 \noindent
 $N_{ij}$ := Conjunto de vecinos de la partícula $x_{ij}$.\\
 $F_{ij}$ := Fuerza de atracción ejercida sobre la partícula $x_{ij}$.\\
 $D(x_1,x_2)$ := Distancia entre $x_1$ y $x_2$.\\
 
+\subsection*{Esquema}
 Las figuras siguientes refieren a dos elementos más del esquema de
 implementación que consideramos relevantes destacar: El operador de repulsión y la forma de la estructura de la población del MOA.\newpage
 \begin{multicols}{2}
@@ -137,6 +136,14 @@ implementación que consideramos relevantes destacar: El operador de repulsión 
   \caption{Estructura de la población. Cada nodo es una partícula.}
 \end{figure}
 \end{multicols}
+
+\subsection*{Datos de la computadoraexperimental}
+ajsnjfjdfj
+
+\subsection*{Diseño de implementación}
+aqui decimos cosas de que lo hicimos todo nos y maldecimos a ismail
+y a los 8 ñericks.
+
 Más detalles sobre el diseño de la implementación se pueden encontrar en la Sección \ref{sec:esp} y siempre se puede consultar el código fuente
 del proyecto en el directorio \textit{src/}.\\
 
@@ -178,6 +185,9 @@ Para hacer la comparación entre ambos algoritmos graficaremos el exceso porcent
 \newpage
 
 \section{Especificación}\label{sec:esp}
+Esta sección cubre los aspectos más relevantes del diseño y construcción
+de nuestro SRMOA. Si en algún momento de la lectura llega a ser confuso
+de qué paso o etapa del algoritmo estamos elaborando, recomendamos volver a revisar el pseudocódigo del algoritmo básico (\ref{alg:moa} MOA).
 \subsubsection*{Codificación del problema}
 La codificación del problema se realizó de manera similar a la codificación del AGS implementado en el primer proyecto de la materia, puesto que
 cada individuo contaba tanto en su fenotipo como en su genotipo, una permutación de las ciudades sin repeticiones de la instancia del TSP; el arreglo asociado, representa la ruta propuesta por el individuo.
@@ -195,7 +205,7 @@ Con el fin de evitar la implementación de un corrector de partículas, la gener
 La evaluación de la población en un primer momento se realiza calculando el costo de la ruta propuesta por cada partícula. Tratando de seguir un
 desarrollo similar al que experimentamos con el AGS en el primer proyecto, efectuamos el cálculo del costo de la siguiente manera:
 \begin{equation}
-  Costo(x) = d(x[0],x[n-1]) + \sum\limits_{i=0}^{n} d(x[i],x[i+1])
+  Costo(x) = d(x[0],x[n-1]) + \sum\limits_{i=0}^{n-2} d(x[i],x[i+1])
 \end{equation}
 Donde $x[i]$ corresponde a una de las ciudades representadas por la posición de la partícula $x$, y $n$ es la dimensión del espacio de búsqueda (el total de ciudades de la instancia del TSP).
 
@@ -219,7 +229,7 @@ Al término el cálculo del desempeño de cada partícula, se almacena en uno de
 \newpage
 \section{Experimentación}
 Con los parámetros determinados en la sección del planteamiento del
-proyecto (Metodología \ref{sec:met}), en esta sección incluímos las siguientes gráficas, una por cada instancia del TSP que elegimos, para representar visualmente el exceso porcentual promedio respecto de las generaciones del total de ejecuciones realizadas sobre cada archivo.
+proyecto (\ref{sec:met} \textit{Metodología}), en esta sección incluímos las siguientes gráficas, una por cada instancia del TSP que elegimos, para representar visualmente el exceso porcentual promedio respecto de las generaciones del total de ejecuciones realizadas sobre cada archivo.
 Para hacer aún más sencilla la observación comparativa, están representados con acotaciones de color ambos algoritmos.
 
 \subsection{Instancia burma14}
@@ -469,5 +479,22 @@ previa de la experimentación que se llevó a cabo, proporcionamos los siguiente
 \end{table}
 \newpage
 \section{Conclusiones}
+Después de recolectar la información en nuestras tablas de datos y representarlas visualmente con ayuda de las gráficas, exhibidas en la sección anterior, podemos verificar nuestras hipótesis prevías en el planteamiento del proyecto.
 
+En primer lugar, esperábamos encontrarnos con un desempeño similar de ambos algoritmos para las cinco instancias del TSP. Observamos que al menos para las primeras tres instancias (\textit{burma14}, \textit{ulysses16} y \textit{gr17}), esto se cumplió. Sin embargo, para las dos instancias restantes (\textit{kroA100} y \textit{pr264}), de un orden de magnitud mayor, la diferencia entre el exceso porcentual de ambos algoritmos fue mucho más pronunciada, favoreciendo al SRMOA, que redujo considerablemente el error porcentual desde las primeras 200 generaciones, manteniendo consistentemente esa reducción en la ejecución.
+
+Lo anterior mencionado, da pie a confirmar nuestra segunda hipótesis: el desempeño del SRMOA muestra una mejora conforme crece la dimensión del problema. Lo que pudimos observar en las ejecuciones de las instancias de menor tamaño respecto de las dos más grandes, fue que el comportamiento del AGS no fue tan sensible como el SRMOA a tamaños mayores de las instancias del TSP, mientras que el SRMOA se vio afectado con una convergencia más temprana que la de su adversario. Desafortunadamente, y contrario a lo que nos hubiese gustado ver, ninguno de los dos logró llegar en estos casos a soluciones óptimas dentro del límite de generaciones que establecimos.
+
+También señalamos dentro de las hipótesis el supuesto de una implementación más sencilla del SRMOA que la del AGS. Si bien, no erramos al suponer eso, subestimamos el tiempo y el esfuerzo necesario para entender los conceptos propuestos en el algoritmo básico que estudiamos. Afortunadamente, una vez planteada nuestra propia versión de algoritmo, poner manos a la obra y concluir nuestra construcción, fue mucho más breve y ameno. Cabe mencionar que la estructura de la implementación del primer proyecto -original del ayudante de Laboratorio, Roberto Monroy-, sirvió de guía para la organización del programa del SRMOA, inspirándonos confianza para considerar ambos materiales, candidatos válidos para la comparativa que queríamos analizar en este trabajo final.
+
+Una de las cosas que no podemos dejar sin mención es el elevado costo en tiempo que exige el SRMOA en sus ejecuciones. Podemos observar en la tabla de datos los tiempos de ambos algoritmos, que para instancias de mayor tamaño se dispara el tiempo requerido por el SRMOA paa completar las generaciones. Aunque, en clase ya habíamos establecido que la complejidad en tiempo no era la más atractiva, el último resultado en tiempo del SRMOA antes del total (\textit{pr264}), que fue seis veces mayor al anterior (\textit{kroA100}), nos convenció de que el AGS es un adversario
+demasiado fuerte para el SRMOA. En términos de tiempo, declaramos que esta contienda la gana la propuesta más antigua.
+
+Finalmente... aquí unas palabras más y menos de técnicas blalasbasab
+y algún aprendizaje...jijijiji
+
+
+\newpage
+
+\section{Referencias}
 \end{document}
