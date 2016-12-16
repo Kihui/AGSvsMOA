@@ -37,13 +37,13 @@ Para este proyecto final decidimos realizar una comparación entre el Algoritmo 
 con un operador enfocado a la \textbf{exploración}, propuesto en el artículo\footnote{Magnetic-inspired optimization algorithms: Operators and structures} que escogimos para la exposición en clase.
 
 Como punto de referencia, elegimos implementar un programa similar al que hicimos primero para encontrar soluciones óptimas de
-varias instancias del Problema del Agente Viajero (\textbf{TSP}) usando el MOA. Lo anterior por nuestra experiencia previa con el desarrollo del primer proyecto\footnote{Referencia al repositorio del primer proyecto}, que nos sirvió de guía para llevar a cabo la construcción de nuestra propia versión de un MOA aplicado a TSP.
+varias instancias del Problema del Agente Viajero (\textbf{TSP}) usando el MOA. Lo anterior por nuestra experiencia previa con el desarrollo del primer proyecto\footnote{Referencia al repositorio del primer proyecto: \href{https://github.com/Kihui/Proyecto-TSP}{Proyecto-TSP}}, que nos sirvió de guía para llevar a cabo la construcción de nuestra propia versión de un MOA aplicado a TSP.
 
-La idea es verificar si el MOA, siendo una propuesta reciente\footnote{Propuesto por bla y bla} en el mundo del cómputo evolutivo, es una buena opción para resolver problemas de este tipo como ya hemos visto con el AGS y decidir si es en algún aspecto competitivo respecto a su adversario.
+La idea es verificar si el MOA, siendo una propuesta reciente\footnote{Propuesto por \textit{N.M.H Tarayani} y \textit{T.M.R. Akbarzadeh} en 2008} en el mundo del cómputo evolutivo, es una buena opción para resolver problemas de este tipo como ya hemos visto con el AGS y decidir si es en algún aspecto competitivo respecto a su adversario.
 La entrada de ambos programas es una instancia del TSP, para la que ambos algoritmos mostrarán la mejor solución encontrada en cada una de sus iteraciones.
 
-Para manejar y procesar las instancias del TSP, proporcionadas por la colección \textit{TSPLIB}\footnote{pagina oficial} y recopiladas en archivos individuales bajo el directorio \textit{tsp/}, hacemos uso de una
-biblioteca para \textit{Java}, llamada \textit{TSPLIB4J}\footnote{referencia a su repo de github}.
+Para manejar y procesar las instancias del TSP, proporcionadas por la colección \textit{TSPLIB}\footnote{TSPLIB: \href{http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/}{página oficial}} y recopiladas en archivos individuales bajo el directorio \textit{tsp/}, hacemos uso de una
+biblioteca para \textit{Java}, llamada \textit{TSPLIB4J}\footnote{TSPLIB4J: \href{https://github.com/dhadka/TSPLIB4J}{\textit{GitHub}}}.
 
 
 \subsection*{Marco teórico}
@@ -121,9 +121,10 @@ $N_{ij}$ := Conjunto de vecinos de la partícula $x_{ij}$.\\
 $F_{ij}$ := Fuerza de atracción ejercida sobre la partícula $x_{ij}$.\\
 $D(x_1,x_2)$ := Distancia entre $x_1$ y $x_2$.\\
 
+\newpage
 \subsection*{Esquema}
 Las figuras siguientes refieren a dos elementos más del esquema de
-implementación que consideramos relevantes destacar: El operador de repulsión y la forma de la estructura de la población del MOA.\newpage
+implementación que consideramos relevantes destacar: El operador de repulsión y la forma de la estructura de la población del MOA.
 \begin{multicols}{2}
 \begin{figure}[H]
   \centering
@@ -137,15 +138,15 @@ implementación que consideramos relevantes destacar: El operador de repulsión 
 \end{figure}
 \end{multicols}
 
-\subsection*{Datos de la computadoraexperimental}
+\subsection*{Datos de la computadora experimental}
 ajsnjfjdfj
 
 \subsection*{Diseño de implementación}
-aqui decimos cosas de que lo hicimos todo nos y maldecimos a ismail
-y a los 8 ñericks.
+La implementación de nuestro MOA es un enfoque original, basado en el algoritmo básico recién mostrado. Intentamos seguir las especificaciones de
+\ref{sec:ref}.[2], sin embargo, por falta de información nos resultó imposible seguir el esquema de votaciones por ciudad en el vector de posición de la partícula, no por que la codificación no fuese clara, sino porque no logramos empatar los conceptos de velocidad y movimiento de partículas con esa propuesta, además de que no nos pareció muy claro en dicho artículo. Es por ello que decidimos conservar una codificación similar a la del AGS implementado en el primer proyecto y nos auxiliamos del concepto de movimiento de partículas por secuencias de operadores de permutación (como en \ref{sec:ref}.[4]), con una probabilidad determinada por la fuerza de atracción ejercida sobre las partículas.
 
 Más detalles sobre el diseño de la implementación se pueden encontrar en la Sección \ref{sec:esp} y siempre se puede consultar el código fuente
-del proyecto en el directorio \textit{src/}.\\
+del proyecto en el directorio \textit{src/}.
 
 A partir de ahora, nos referiremos a la implementación del MOA como SRMOA, por el operador que incluye en su ejecución.
 \newpage
@@ -496,5 +497,17 @@ y algún aprendizaje...jijijiji
 
 \newpage
 
-\section{Referencias}
+\section{Referencias}\label{sec:ref}
+
+
+\begin{enumerate}
+\item N.M.H. Tarayani, T.M.R. Akbarzadeh, Magnetic optimization algorithm, a new synthesis, in: IEEE World Congress on Computational Intelligence, Hong Kong, 2008.
+
+\item M.M. Ismail, M.I. Zakaria, A.F.Z. Abidin, J.M. Juliani, A. Lit, S. Mirjalili, N.A. Nordin, M.F.M. Saaid, Magnetic optimization algorithm approach for travelling salesman problem, in: World Academy of Science, Engineering and Technology, 2012.
+
+\item N.M.H. Tarayani, T.M.R. Akbarzadeh, Magnetic-inspired optimization algorithm: Operators and structures, in: Swarm and Evolutionary Computation, 2012.
+
+\end{enumerate}
+
+
 \end{document}
