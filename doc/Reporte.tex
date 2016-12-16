@@ -139,7 +139,8 @@ implementación que consideramos relevantes destacar: El operador de repulsión 
 \end{multicols}
 
 \subsection*{Datos de la computadora experimental}
-ajsnjfjdfj
+\noindent Memoria RAM: 7.7GiB \\
+Procesador: Intel® Core™ i7-3630QM CPU @ 2.40GHz x 8 
 
 \subsection*{Diseño de implementación}
 La implementación de nuestro MOA es un enfoque original, basado en el algoritmo básico recién mostrado. Intentamos seguir las especificaciones de
@@ -186,47 +187,54 @@ Para hacer la comparación entre ambos algoritmos graficaremos el exceso porcent
 \newpage
 
 \section{Especificación}\label{sec:esp}
-Esta sección cubre los aspectos más relevantes del diseño y construcción
-de nuestro SRMOA. Si en algún momento de la lectura llega a ser confuso
-de qué paso o etapa del algoritmo estamos elaborando, recomendamos volver a revisar el pseudocódigo del algoritmo básico (\ref{alg:moa} MOA).
-\subsubsection*{Codificación del problema}
-La codificación del problema se realizó de manera similar a la codificación del AGS implementado en el primer proyecto de la materia, puesto que
-cada individuo contaba tanto en su fenotipo como en su genotipo, una permutación de las ciudades sin repeticiones de la instancia del TSP; el arreglo asociado, representa la ruta propuesta por el individuo.
-
-En este caso, se trata de partículas con una ruta asociada, un vector de ciudades que determinan la posición de dicha partícula en el espacio de
-búsqueda y que será alterada dependendiendo de la velocidad calculada por el cociente de la fuerza de atracción ejercida por sus vecinos y su masa,
-junto con un factor aleatorio (\ref{sec:vel}).
-
-Por ejemplo, para una partícula $x$ con posición $i,j$ en la estructura celular en la generación $t$,
-$x_{ij}^t = [1,3,2,4,5]$, la ruta propuesta sería: $C_1 \to C_3 \to C_2 \to C_4 \to C_5 \to C_1$, $C_i \in P$, considerando a $P$ el conjunto de ciudades de la instancia de TSP.
-
-Con el fin de evitar la implementación de un corrector de partículas, la generación de la población inicial aleatoria, se realizó con cuidado de asignar cada ciudad elegida aleatoriamente de $P$ sólo una vez por individuo. Acorde a esa intención, el operador velocidad que afecta la posición de una partícula, i.e. su ruta, realiza permutaciones entre las ciudades de dicha partícula únicamente, por lo que no existe el riesgo de invalidar una propuesta de ``tour'' al aplicarlo.
-
-\subsubsection*{Evaluación de la población}
-La evaluación de la población en un primer momento se realiza calculando el costo de la ruta propuesta por cada partícula. Tratando de seguir un
-desarrollo similar al que experimentamos con el AGS en el primer proyecto, efectuamos el cálculo del costo de la siguiente manera:
-\begin{equation}
-  Costo(x) = d(x[0],x[n-1]) + \sum\limits_{i=0}^{n-2} d(x[i],x[i+1])
-\end{equation}
-Donde $x[i]$ corresponde a una de las ciudades representadas por la posición de la partícula $x$, y $n$ es la dimensión del espacio de búsqueda (el total de ciudades de la instancia del TSP).
-
-Una vez obtenido el costo de todos los viajes -como vimos en el proyecto
-anterior, no es posible utilizar este valor como ``fitness'' para nuestro algoritmo de optimización, pues el objetivo es minimizar ese costo-,
-tal como en el AGS, decidimos considerar la función de
-adaptación como sigue:
-\begin{equation}
-  fun(x) = (Costo_{max} + Costo_{min})-Costo(x)
-\end{equation}
-Al término el cálculo del desempeño de cada partícula, se almacena en uno de los atributos de la partícula, que corresponde a su campo magnético.
-
 \subsubsection*{Campos magnéticos}
+Una vez evaluados los campos magnéticos de todas las partículas, estos son normalizados de manera que tomen un valor en [0, 1], esto se hace por medio de la siguiente fórmula
+
+\begin{equation}
+  B_{ij} = \frac{B_{ij} - B_{min}} {B_{max} - B_{min}} 
+\end{equation}
+
+\noindent donde $B_{max}$ y $B_{min}$ son el campo más grande de todas las partículas y el menor respectivamente. El resultado es que las partículas con las mejores rutas tendrán los campos más grandes, y las que tengan peores rutas tendran campos más pequeños.
+
 \subsubsection*{Masa}
+El siguiente paso es asignarle una masa $M_{ij}$ a cada partícula $x_{ij}$, lo cual se hace simplemente con la fórmula
+
+\begin{equation}
+  M_{ij} = \alpha + \rho \times B_{ij}
+\end{equation}
+
 \subsubsection*{Fuerza de atracción}
+Se procede a evaluar la fuerza $F_{ij}$ de atracción que es ejercida en cada partícula por sus vecinos. Definimos la fuerza como un vector de manera que $F_{ij}$ = $(f_0, f_1, ... , f_{n - 1})$,  recordando que $n$ es el número de ciudades. \\
+El valor de cada $f_k$ en $F_{ij}$ para $x_{ij}$ lo definimos como:
+\begin{equation}
+  f_k = \sum_{x_{uv} \in N_{ij}}\frac{(x_{uv}[k] - x_{ij}[k]) \times B_{ij}}{D(x_{ij}, x_{uv})}
+\end{equation}
+donde $x[k]$ es el número de la ciudad en la posición k en $x$ y la distancia $D(x_{ij}, x_{uv})$ la calculamos tomando a las partículas $x_{ij}$ y $x_{uv}$ como dos puntos en un espacio $\mathbb{R}^n$ de manera que cada ciudad en el conjunto de ciudades de cada partícula representa una coordenada.
 
-\subsection*{Operadores}
 \subsubsection*{Velocidad}\label{sec:vel}
+La velocidad de las partículas la definimos de igual manera como un vector $V_{ij}$ = $(v_0, v_1,...,v_{n - 1})$. Para calcular la velocidad de $x_{ij}$ tomamos $F_{ij}$ y $M_{ij}$ y aplicamos la siguiente función para todos los valores $v_k$ en $V_{ij}$
+\begin{equation}
+  v_k = \frac{f_k}{M_{ij}} \times R(0, n)
+\end{equation}
+donde $R(0, n)$ es un número aleatorio entre 0 y $n$. Después normalizamos los valores $v_k$ para que tengan un valor en [0, 1], la razón se explica a continuación.
 
-\subsubsection*{SRR}
+\subsubsection*{Movimiento}
+Como decidimos codificar el problema representando las rutas con los índices de las ciudades, tuvimos que adecuar el algoritmo MOA para que al recalcular la posición de cada partícula cada ruta siga siendo válida y sin la necesidad de hacer un corrector, para lo cuál decidimos que las entradas de cada vector de velocidades fueran una probabilidad, por eso es que las normalizamos. Éstas probabilidades nos permiten definir si se va a realizar una permutación en cada índice de la ruta, i.e. para cada $x_{ij}$ se toma su velocidad $V_{ij}$ y cada uno de sus valores $v_k$ funciona como una probabilidad de que la ciudad en $x_{ij}[k]$ sea permutada con otra ciudad. Para esto se procede a obtener un número aleatorio $r$ para cada ciudad, si $r$ $\leqslant$ $v_k$ entonces $x_{ij}[k]$ es permutada. \\
+
+\noindent Cada permutación no es aleatoria, la manera en que se decide con qué ciudad se va a permutar cada ciudad es la siguiente: \\
+
+\noindent Se toma al vecino $x_{uv}$ $\in$ $N_{ij}$ con el campo magnético más grande. Para cada ciudad $x_{ij}[k]$ a permutar
+si $x_{ij}[k]$ = $x_{uv}[k]$ no se hace nada. De lo contrario se busca el índice $m$ tal que $x_{ij}[m]$ = $x_{uv}[k]$ y se permuta $x_{ij}[k]$ con $x_{ij}[m]$. Claro que en todo caso se evita cambiar la primer ciudad que siempre va a ser la primera en visitarse.
+
+\subsubsection*{Operador SRR}
+
+La última parte del algoritmo consiste en lo siguiente: \\
+Para cada vecino $x_{uv}$  de cada partícula $x_{ij}$, si $D(x_{ij}, x_{uv})$ $<$ $T_{srr}$ entonces se le aplica el operador SRR a $x_{ij}$. Éste operador permuta las ciudades de $x_{ij}$ de manera aleatoria si es que se cumple una probabilidad, i.e. hacemos un vector
+$A_{ij}$ = $(a_0, a_1,...,a_{n-1})$ similar al vector de velocidad, pero los valores $a_k$ estan definidos de ésta manera:
+\begin{equation}
+  a_k = C_{srr} \times R(0, n)
+\end{equation}
+Procedemos a normalizar los valores de $A_{ij}$ para convertirlos en probabilidades, y finalmente por cada $a_k$ obtenemos un número aleatorio $r$ en [0, 1], si $r$ $\leqslant$ $a_k$ entonces se permuta la ciudad $x_{ij}[k]$ con otra ciudad aleatoria, evitando siempre permutar la primer ciudad.
 \newpage
 \section{Experimentación}
 Con los parámetros determinados en la sección del planteamiento del
