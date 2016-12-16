@@ -81,7 +81,7 @@ Siguiendo esa línea, las virtudes que supone el esquema del MOA parecen promete
 Como herramienta fundamental, proporcionamos el pseudo-código del MOA básico que no contempla más operadores que el de actualización de posición de una partícula dada su velocidad.\\
 
 
-\begin{multicols}{2}
+
   \begin{center}
     \begin{algorithm}[H]
 %\SetAlgoNoLine
@@ -123,13 +123,19 @@ $N_{ij}$ := Conjunto de vecinos de la partícula $x_{ij}$.\\
 $F_{ij}$ := Fuerza de atracción ejercida sobre la partícula $x_{ij}$.\\
 $D(x_1,x_2)$ := Distancia entre $x_1$ y $x_2$.\\
 
-La figura siguiente es el esquema del operador de repulsión SRR,
-\begin{center}
+Las figuras siguientes refieren a dos elementos más del esquema de
+implementación que consideramos relevantes destacar: El operador de repulsión y la forma de la estructura de la población del MOA.\newpage
+\begin{multicols}{2}
+\begin{figure}[H]
   \centering
   \includegraphics[width=.5\textwidth]{SRR}
-  %\caption{Representación del umbral de acción del operador SRR.}
-\end{center}
-En ella se puede apreciar el umbral de distancia mínima $T_{SRR}$, que debe existir entre partículas. Pasado el umbral, se aplica el operador de repulsión.
+  \caption{Representación del umbral $T_{SRR}$ de acción del operador SRR.}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.437\textwidth]{cell}
+  \caption{Estructura de la población. Cada nodo es una partícula.}
+\end{figure}
 \end{multicols}
 Más detalles sobre el diseño de la implementación se pueden encontrar en la Sección \ref{sec:esp} y siempre se puede consultar el código fuente
 del proyecto en el directorio \textit{src/}.\\
