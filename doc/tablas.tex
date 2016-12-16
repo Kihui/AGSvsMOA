@@ -226,4 +226,62 @@
     \end{tabular}
   }
 \end{table}
+
+\section{Especificación}
+
+\subsubsection*{Campos magnéticos}
+Una vez evaluados los campos magnéticos de todas las partículas, estos son normalizados de manera que tomen un valor en [0, 1], esto se hace por medio de la siguiente fórmula
+
+\begin{equation}
+  B_{ij} = \frac{B_{ij} - B_{min}} {B_{max} - B_{min}} 
+\end{equation}
+
+\noindent donde $B_{max}$ y $B_{min}$ son el campo más grande de todas las partículas y el menor respectivamente. El resultado es que las partículas con las mejores rutas tendrán los campos más grandes, y las que tengan peores rutas tendran campos más pequeños.
+
+\subsubsection*{Masa}
+El siguiente paso es asignarle una masa $M_{ij}$ a cada partícula $x_{ij}$, lo cual se hace simplemente con la fórmula
+
+\begin{equation}
+  M_{ij} = \alpha + \rho \times B_{ij}
+\end{equation}
+
+\subsubsection*{Fuerza de atracción}
+Se procede a evaluar la fuerza $F_{ij}$ de atracción que es ejercida en cada partícula por sus vecinos. Definimos la fuerza como un vector de manera que $F_{ij}$ = $(f_0, f_1, ... , f_{n - 1})$,  recordando que $n$ es el número de ciudades. \\
+El valor de cada $f_k$ en $F_{ij}$ para $x_{ij}$ lo definimos como:
+\begin{equation}
+  f_k = \sum_{x_{uv} \in N_{ij}}\frac{(x_{uv}[k] - x_{ij}[k]) \times B_{ij}}{D(x_{ij}, x_{uv})}
+\end{equation}
+donde $x[k]$ es el número de la ciudad en la posición k en $x$ y la distancia $D(x_{ij}, x_{uv})$ la calculamos tomando a las partículas $x_{ij}$ y $x_{uv}$ como dos puntos en un espacio $\mathbb{R}^n$ de manera que cada ciudad en el conjunto de ciudades de cada partícula representa una coordenada.
+
+\subsubsection*{Velocidad}\label{sec:vel}
+La velocidad de las partículas la definimos de igual manera como un vector $V_{ij}$ = $(v_0, v_1,...,v_{n - 1})$. Para calcular la velocidad de $x_{ij}$ tomamos $F_{ij}$ y $M_{ij}$ y aplicamos la siguiente función para todos los valores $v_k$ en $V_{ij}$
+\begin{equation}
+  v_k = \frac{f_k}{M_{ij}} \times R(0, n)
+\end{equation}
+donde $R(0, n)$ es un número aleatorio entre 0 y $n$. Después normalizamos los valores $v_k$ para que tengan un valor en [0, 1], la razón se explica a continuación.
+
+\subsubsection*{Movimiento}
+Como decidimos codificar el problema representando las rutas con los índices de las ciudades, tuvimos que adecuar el algoritmo MOA para que al recalcular la posición de cada partícula cada ruta siga siendo válida y sin la necesidad de hacer un corrector, para lo cuál decidimos que las entradas de cada vector de velocidades fueran una probabilidad, por eso es que las normalizamos. Éstas probabilidades nos permiten definir si se va a realizar una permutación en cada índice de la ruta, i.e. para cada $x_{ij}$ se toma su velocidad $V_{ij}$ y cada uno de sus valores $v_k$ funciona como una probabilidad de que la ciudad en $x_{ij}[k]$ sea permutada con otra ciudad. Para esto se procede a obtener un número aleatorio $r$ para cada ciudad, si $r$ $\leqslant$ $v_k$ entonces $x_{ij}[k]$ es permutada. \\
+
+\noindent Cada permutación no es aleatoria, la manera en que se decide con qué ciudad se va a permutar cada ciudad es la siguiente: \\
+
+\noindent Se toma al vecino $x_{uv}$ $\in$ $N_{ij}$ con el campo magnético más grande. Para cada ciudad $x_{ij}[k]$ a permutar
+si $x_{ij}[k]$ = $x_{uv}[k]$ no se hace nada. De lo contrario se busca el índice $m$ tal que $x_{ij}[m]$ = $x_{uv}[k]$ y se permuta $x_{ij}[k]$ con $x_{ij}[m]$. Claro que en todo caso se evita cambiar la primer ciudad que siempre va a ser la primera en visitarse.
+
+\subsubsection*{Operador SRR}
+
+La última parte del algoritmo consiste en lo siguiente: \\
+Para cada vecino $x_{uv}$  de cada partícula $x_{ij}$, si $D(x_{ij}, x_{uv})$ $<$ $T_{srr}$ entonces se le aplica el operador SRR a $x_{ij}$. Éste operador permuta las ciudades de $x_{ij}$ de manera aleatoria si es que se cumple una probabilidad, i.e. hacemos un vector
+$A_{ij}$ = $(a_0, a_1,...,a_{n-1})$ similar al vector de velocidad, pero los valores $a_k$ estan definidos de ésta manera:
+\begin{equation}
+  a_k = C_{srr} \times R(0, n)
+\end{equation}
+Procedemos a normalizar los valores de $A_{ij}$ para convertirlos en probabilidades, y finalmente por cada $a_k$ obtenemos un número aleatorio $r$ en [0, 1], si $r$ $\leqslant$ $a_k$ entonces se permuta la ciudad $x_{ij}[k]$ con otra ciudad aleatoria, evitando siempre permutar la primer ciudad.
+
+\newpage
+
+\subsection*{Datos de la computadora experimental}
+\noindent Memoria RAM: 7.7GiB \\
+Procesador: Intel® Core™ i7-3630QM CPU @ 2.40GHz x 8 
+
 \end{document}
